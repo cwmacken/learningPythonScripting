@@ -1,0 +1,69 @@
+import os
+import shutil
+
+# list all directories in current directory and put them into an array for each
+
+dirs = []
+
+for x in range(0, len(os.listdir('.'))):
+    if os.path.isdir(os.listdir('.')[x]):
+    	dirs.append([os.listdir('.')[x]])
+
+# create keys for key value pairing
+
+for x in range(0, len(dirs)):
+	dirs[x].append(dirs[x][0].split('_EP')[1])
+
+# list all files throw out .dsstore and the script file
+
+files = []
+
+for x in range(0, len(os.listdir('.'))):
+    if os.path.isdir(os.listdir('.')[x]) == False:
+    	if os.listdir('.')[x] == '.DS_Store' or os.listdir('.')[x] == 'script.py':
+    		print 'skipped '+ os.listdir('.')[x]
+    	else:
+    		files.append([os.listdir('.')[x]])
+
+# create keys for key value pair for files
+
+def hasNumbers(inputString):
+	return any(char.isdigit() for char in inputString)
+
+def findNumber(fileInput, indexNum):
+	for y in range(0,len(fileInput)):
+		if fileInput[y].isdigit():
+
+			newNum = fileInput[y]
+
+			# identify if the number is 2 or more characters
+			for z in range(y+1, len(fileInput)):
+
+				if(fileInput[z].isdigit()):
+
+					newNum = newNum + fileInput[z]
+
+				else:
+
+					files[indexNum].append(newNum)
+					return
+
+for x in range(0, len(files)):
+	if hasNumbers(files[x][0]):
+		findNumber(files[x][0], x)
+
+# if number of file == number of dir then cp file to folder after that delete file
+
+def matchFile(indexNum, filePath):
+	for y in range(0, len(files)):
+		if(indexNum == files[y][1]):
+
+			dst = filePath+ files[y][0]
+			shutil.copyfile(files[y][0], dst )
+			os.remove(files[y][0])
+
+for x in range(0,len(dirs)):
+
+	dst = './'+dirs[x][0] +'/'
+	matchFile(dirs[x][1],dst )
+
