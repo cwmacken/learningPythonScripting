@@ -37,6 +37,7 @@ def findNumber(fileInput, indexNum):
 			newNum = fileInput[y]
 
 			# identify if the number is 2 or more characters
+			# this is dirty and needs to be moved into its own function
 			for z in range(y+1, len(fileInput)):
 
 				if(fileInput[z].isdigit()):
